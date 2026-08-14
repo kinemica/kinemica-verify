@@ -1,5 +1,7 @@
 # Kinemica Verify
 
+[![CI](https://github.com/kinemica/kinemica-verify/actions/workflows/ci.yml/badge.svg)](https://github.com/kinemica/kinemica-verify/actions/workflows/ci.yml)
+
 Open-source verification infrastructure for physical-world work performed by people, agents, and machines.
 
 Kinemica Verify defines machine-readable **Work Contracts** and deterministically checks submitted evidence against the conditions that matter for safe, correct completion: preconditions, required steps, operational constraints, required evidence, and final state.
