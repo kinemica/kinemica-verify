@@ -1,17 +1,13 @@
 version: 1
-
 preconditions:
   machine_powered_down: true
-
 steps:
-  - remove_old_filter
-  - install_new_filter
-  - secure_cover
-
+- remove_old_filter
+- install_new_filter
+- secure_cover
 measurements:
   max_force_n: 31.8
   cover_torque_nm: 7.4
-
 artifacts:
   before_image:
     path: before_image.txt
@@ -23,6 +19,7 @@ artifacts:
     value: 7.4
   final_system_test:
     value: passed
-
+  execution_trace:
+    path: trace.jsonl
 final_state:
   system_test_passed: true

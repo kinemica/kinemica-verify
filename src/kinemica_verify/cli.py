@@ -11,6 +11,7 @@ from pathlib import Path
 from .errors import KinemicaVerifyError
 from .records import create_signed_record, verify_signed_record, write_signed_record
 from .signing import generate_keypair
+from .traces import write_manifest_from_trace
 from .verifier import verify_work
 
 
@@ -28,6 +29,18 @@ def _parser() -> argparse.ArgumentParser:
     verify.add_argument("--record", type=Path, help="write a signed verification record")
     verify.add_argument("--signing-key", type=Path, help="Ed25519 private key used with --record")
 
+    ingest_trace = subparsers.add_parser(
+        "ingest-trace",
+        help="generate an Evidence Manifest from a JSON Lines execution trace",
+    )
+    ingest_trace.add_argument("trace", type=Path, help="execution trace JSONL inside evidence dir")
+    ingest_trace.add_argument("evidence", type=Path, help="evidence directory")
+    ingest_trace.add_argument(
+        "--force",
+        action="store_true",
+        help="replace an existing manifest.yaml",
+    )
+
     keygen = subparsers.add_parser("keygen", help="generate an Ed25519 signing key pair")
     keygen.add_argument("--private-key", type=Path, required=True, help="private PEM output path")
     keygen.add_argument("--public-key", type=Path, required=True, help="public PEM output path")
@@ -39,7 +52,9 @@ def _parser() -> argparse.ArgumentParser:
     verify_record.add_argument("record", type=Path, help="signed verification record JSON")
     verify_record.add_argument("public_key", type=Path, help="trusted Ed25519 public PEM key")
     verify_record.add_argument("--contract", type=Path, help="re-check the bound Work Contract")
-    verify_record.add_argument("--evidence", type=Path, help="re-check the bound evidence directory")
+    verify_record.add_argument(
+        "--evidence", type=Path, help="re-check the bound evidence directory"
+    )
     verify_record.add_argument("--json", action="store_true", dest="as_json", help="emit JSON")
 
     return parser
@@ -111,6 +126,19 @@ def _verify_command(args: argparse.Namespace) -> int:
     return 0 if report.verified else 1
 
 
+def _ingest_trace_command(args: argparse.Namespace) -> int:
+    try:
+        output = write_manifest_from_trace(args.trace, args.evidence, force=args.force)
+    except KinemicaVerifyError as exc:
+        return _error(str(exc))
+
+    print("Kinemica Verify")
+    print()
+    print(f"Execution trace     {args.trace}")
+    print(f"Evidence manifest   {output}")
+    return 0
+
+
 def _keygen_command(args: argparse.Namespace) -> int:
     try:
         key_id = generate_keypair(args.private_key, args.public_key)
@@ -148,6 +176,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "verify":
         return _verify_command(args)
+    if args.command == "ingest-trace":
+        return _ingest_trace_command(args)
     if args.command == "keygen":
         return _keygen_command(args)
     if args.command == "verify-record":

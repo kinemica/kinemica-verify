@@ -1,0 +1,42 @@
+{
+  "$id": "https://kinemica.com/schemas/execution-trace-event-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kinemica Execution Trace Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": 1},
+    "sequence": {"type": "integer", "minimum": 0},
+    "timestamp_ns": {"type": "integer", "minimum": 0},
+    "kind": {"enum": ["precondition", "step", "measurement", "artifact", "final_state"]},
+    "name": {"type": "string", "minLength": 1},
+    "value": {"type": ["string", "number", "boolean", "null"]},
+    "path": {"type": "string", "minLength": 1}
+  },
+  "required": ["version", "sequence", "kind", "name"],
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "step"}}, "required": ["kind"]},
+      "then": {"not": {"anyOf": [{"required": ["value"]}, {"required": ["path"]}]}}
+    },
+    {
+      "if": {"properties": {"kind": {"const": "measurement"}}, "required": ["kind"]},
+      "then": {
+        "required": ["value"],
+        "properties": {"value": {"type": "number"}},
+        "not": {"required": ["path"]}
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"enum": ["precondition", "final_state"]}}, "required": ["kind"]},
+      "then": {"required": ["value"], "not": {"required": ["path"]}}
+    },
+    {
+      "if": {"properties": {"kind": {"const": "artifact"}}, "required": ["kind"]},
+      "then": {
+        "anyOf": [{"required": ["value"]}, {"required": ["path"]}],
+        "properties": {"value": {"type": ["string", "number", "boolean"]}}
+      }
+    }
+  ]
+}

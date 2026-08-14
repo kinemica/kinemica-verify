@@ -1,0 +1,12 @@
+{"version":1,"sequence":1,"timestamp_ns":1000000000,"kind":"precondition","name":"machine_powered_down","value":true}
+{"version":1,"sequence":2,"timestamp_ns":1100000000,"kind":"step","name":"remove_old_filter"}
+{"version":1,"sequence":3,"timestamp_ns":1200000000,"kind":"artifact","name":"before_image","path":"before_image.txt"}
+{"version":1,"sequence":4,"timestamp_ns":1300000000,"kind":"step","name":"install_new_filter"}
+{"version":1,"sequence":5,"timestamp_ns":1400000000,"kind":"artifact","name":"replacement_serial","value":"FILTER-AX7-2026-0042"}
+{"version":1,"sequence":6,"timestamp_ns":1500000000,"kind":"measurement","name":"max_force_n","value":31.8}
+{"version":1,"sequence":7,"timestamp_ns":1600000000,"kind":"artifact","name":"installation_image","path":"installation_image.txt"}
+{"version":1,"sequence":8,"timestamp_ns":1700000000,"kind":"measurement","name":"cover_torque_nm","value":7.4}
+{"version":1,"sequence":9,"timestamp_ns":1800000000,"kind":"artifact","name":"torque_reading","value":7.4}
+{"version":1,"sequence":10,"timestamp_ns":1900000000,"kind":"step","name":"secure_cover"}
+{"version":1,"sequence":11,"timestamp_ns":2000000000,"kind":"artifact","name":"final_system_test","value":"passed"}
+{"version":1,"sequence":12,"timestamp_ns":2100000000,"kind":"final_state","name":"system_test_passed","value":true}

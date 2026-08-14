@@ -2,6 +2,26 @@
 
 All notable changes to Kinemica Verify are documented here.
 
+## 0.3.0 - 2026-08-14
+
+### Added
+
+- Execution Trace v1 JSON Lines ingestion format.
+- `kinemica ingest-trace` for deterministic trace-to-manifest conversion.
+- Strict event ordering, duplicate-key detection, duplicate semantic-name rejection, and non-finite JSON number rejection.
+- File-boundary validation for trace-declared artifacts.
+- Automatic `execution_trace` provenance artifact so signed records bind the source trace bytes.
+- Public Execution Trace Event v1 JSON Schema and format documentation.
+- Reference filter-replacement execution trace.
+- CI regeneration gate proving the checked-in manifest is reproduced exactly from the trace.
+
+### Improved
+
+- PyPI-first installation instructions and package badge.
+- CI and package documentation for execution-trace ingestion.
+
+Work Contract v1, Evidence Manifest v1, and Verification Record v1 semantics remain unchanged.
+
 ## 0.2.1 - 2026-08-14
 
 ### Fixed

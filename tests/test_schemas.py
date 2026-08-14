@@ -6,6 +6,7 @@ def test_public_and_bundled_schemas_match() -> None:
     for name in (
         "work-contract-v1.schema.json",
         "evidence-manifest-v1.schema.json",
+        "execution-trace-event-v1.schema.json",
         "verification-record-v1.schema.json",
     ):
         assert (root / "schemas" / name).read_bytes() == (

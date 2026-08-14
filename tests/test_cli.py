@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 from kinemica_verify.cli import main
@@ -25,6 +26,24 @@ def test_cli_json(capsys) -> None:
 
     assert code == 0
     assert '"verified": true' in output
+
+
+def test_cli_ingest_trace(tmp_path: Path, capsys) -> None:
+    evidence = tmp_path / "evidence"
+    shutil.copytree(EXAMPLE / "evidence", evidence)
+    (evidence / "manifest.yaml").unlink()
+
+    code = main(["ingest-trace", str(evidence / "trace.jsonl"), str(evidence)])
+    output = capsys.readouterr().out
+
+    assert code == 0
+    assert "Evidence manifest" in output
+    assert (evidence / "manifest.yaml").is_file()
+
+    verify_code = main(["verify", str(EXAMPLE / "work.yaml"), str(evidence)])
+    verify_output = capsys.readouterr().out
+    assert verify_code == 0
+    assert "VERIFIED" in verify_output
 
 
 def test_cli_failed_verification_returns_one(tmp_path: Path, capsys) -> None:

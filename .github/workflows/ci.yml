@@ -28,6 +28,13 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest
+      - name: Trace ingestion reproducibility
+        run: |
+          kinemica ingest-trace \
+            examples/filter-replacement/evidence/trace.jsonl \
+            examples/filter-replacement/evidence \
+            --force
+          git diff --exit-code -- examples/filter-replacement/evidence/manifest.yaml
       - name: Example verification
         run: kinemica verify examples/filter-replacement/work.yaml examples/filter-replacement/evidence
       - name: Signed record round trip
@@ -64,3 +71,4 @@ jobs:
           python -m venv /tmp/kinemica-wheel-smoke
           /tmp/kinemica-wheel-smoke/bin/python -m pip install dist/*.whl
           /tmp/kinemica-wheel-smoke/bin/kinemica --help
+          /tmp/kinemica-wheel-smoke/bin/kinemica ingest-trace --help

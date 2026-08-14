@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kinemica-verify"
-version = "0.2.1"
+version = "0.3.0"
 description = "Open-source verification infrastructure for physical-world work."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,7 +13,7 @@ license-files = ["LICENSE"]
 authors = [
   { name = "Sylvester Kaczmarek" }
 ]
-keywords = ["verification", "robotics", "agents", "physical-ai", "safety"]
+keywords = ["verification", "robotics", "agents", "physical-ai", "safety", "telemetry"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3",
