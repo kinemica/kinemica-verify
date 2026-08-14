@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kinemica-verify"
-version = "0.1.0"
+version = "0.2.0"
 description = "Open-source verification infrastructure for physical-world work."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,6 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
+  "cryptography>=50,<51",
   "jsonschema>=4.20,<5",
   "PyYAML>=6,<7",
 ]

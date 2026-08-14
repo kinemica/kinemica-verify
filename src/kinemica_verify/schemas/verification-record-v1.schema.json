@@ -1,0 +1,97 @@
+{
+  "$id": "https://kinemica.com/schemas/verification-record-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": ["sha256"],
+      "type": "object"
+    },
+    "check": {
+      "additionalProperties": false,
+      "properties": {
+        "failures": {
+          "items": {"type": "string"},
+          "type": "array"
+        },
+        "name": {"minLength": 1, "type": "string"},
+        "passed": {"type": "boolean"}
+      },
+      "required": ["name", "passed", "failures"],
+      "type": "object"
+    }
+  },
+  "properties": {
+    "payload": {
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "artifacts": {
+              "additionalProperties": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {"minLength": 1, "type": "string"},
+                  "sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"}
+                },
+                "required": ["path", "sha256"],
+                "type": "object"
+              },
+              "type": "object"
+            },
+            "evidence_manifest": {"$ref": "#/$defs/digest"},
+            "work_contract": {"$ref": "#/$defs/digest"}
+          },
+          "required": ["work_contract", "evidence_manifest", "artifacts"],
+          "type": "object"
+        },
+        "task": {
+          "additionalProperties": false,
+          "properties": {
+            "actor": {"minLength": 1, "type": "string"},
+            "id": {"minLength": 1, "type": "string"}
+          },
+          "required": ["id", "actor"],
+          "type": "object"
+        },
+        "verification": {
+          "additionalProperties": false,
+          "properties": {
+            "checks": {
+              "items": {"$ref": "#/$defs/check"},
+              "minItems": 1,
+              "type": "array"
+            },
+            "verified": {"type": "boolean"}
+          },
+          "required": ["verified", "checks"],
+          "type": "object"
+        }
+      },
+      "required": ["task", "inputs", "verification"],
+      "type": "object"
+    },
+    "signature": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {"const": "Ed25519"},
+        "key_id": {"pattern": "^sha256:[0-9a-f]{64}$", "type": "string"},
+        "value": {"minLength": 1, "type": "string"}
+      },
+      "required": ["algorithm", "key_id", "value"],
+      "type": "object"
+    },
+    "version": {"const": 1}
+  },
+  "required": ["version", "payload", "signature"],
+  "title": "Kinemica Verification Record v1",
+  "type": "object"
+}

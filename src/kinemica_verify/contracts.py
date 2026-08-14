@@ -28,13 +28,13 @@ def _load_yaml(path: Path) -> dict[str, Any]:
     return data
 
 
-def _schema(name: str) -> dict[str, Any]:
+def load_schema(name: str) -> dict[str, Any]:
     schema_file = resources.files("kinemica_verify.schemas").joinpath(name)
     return json.loads(schema_file.read_text(encoding="utf-8"))
 
 
-def _validate(data: dict[str, Any], schema_name: str, label: str) -> None:
-    validator = Draft202012Validator(_schema(schema_name))
+def validate_data(data: dict[str, Any], schema_name: str, label: str) -> None:
+    validator = Draft202012Validator(load_schema(schema_name))
     errors = sorted(
         validator.iter_errors(data),
         key=lambda error: tuple(str(part) for part in error.absolute_path),
@@ -52,7 +52,7 @@ def _validate(data: dict[str, Any], schema_name: str, label: str) -> None:
 
 def load_work_contract(path: Path) -> dict[str, Any]:
     data = _load_yaml(path)
-    _validate(data, "work-contract-v1.schema.json", "Work Contract")
+    validate_data(data, "work-contract-v1.schema.json", "Work Contract")
     return data
 
 
@@ -62,5 +62,5 @@ def load_evidence_manifest(evidence_dir: Path) -> dict[str, Any]:
 
     path = evidence_dir / "manifest.yaml"
     data = _load_yaml(path)
-    _validate(data, "evidence-manifest-v1.schema.json", "Evidence Manifest")
+    validate_data(data, "evidence-manifest-v1.schema.json", "Evidence Manifest")
     return data

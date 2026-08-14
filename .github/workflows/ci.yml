@@ -30,3 +30,18 @@ jobs:
         run: pytest
       - name: Example verification
         run: kinemica verify examples/filter-replacement/work.yaml examples/filter-replacement/evidence
+      - name: Signed record round trip
+        run: |
+          kinemica keygen \
+            --private-key /tmp/kinemica-ci.private.pem \
+            --public-key /tmp/kinemica-ci.public.pem
+          kinemica verify \
+            examples/filter-replacement/work.yaml \
+            examples/filter-replacement/evidence \
+            --signing-key /tmp/kinemica-ci.private.pem \
+            --record /tmp/kinemica-ci-record.json
+          kinemica verify-record \
+            /tmp/kinemica-ci-record.json \
+            /tmp/kinemica-ci.public.pem \
+            --contract examples/filter-replacement/work.yaml \
+            --evidence examples/filter-replacement/evidence

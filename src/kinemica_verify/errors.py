@@ -7,3 +7,7 @@ class KinemicaVerifyError(Exception):
 
 class SchemaValidationError(KinemicaVerifyError):
     """Raised when structured input does not satisfy its schema."""
+
+
+class SignatureVerificationError(KinemicaVerifyError):
+    """Raised when a signed verification record cannot be authenticated."""
