@@ -1,0 +1,32 @@
+version: 1
+
+task:
+  id: replace-filter
+  actor: robot
+
+preconditions:
+  machine_powered_down: true
+
+required_steps:
+  - remove_old_filter
+  - install_new_filter
+  - secure_cover
+
+constraints:
+  max_force_n:
+    op: lte
+    value: 40
+  cover_torque_nm:
+    op: gte
+    value: 6
+
+evidence:
+  required:
+    - before_image
+    - replacement_serial
+    - installation_image
+    - torque_reading
+    - final_system_test
+
+final_state:
+  system_test_passed: true

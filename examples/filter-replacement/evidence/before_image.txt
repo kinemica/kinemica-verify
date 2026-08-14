@@ -1,0 +1,3 @@
+Reference placeholder for a captured pre-job image.
+
+v0.1 verifies the existence of declared evidence files but does not interpret image content.

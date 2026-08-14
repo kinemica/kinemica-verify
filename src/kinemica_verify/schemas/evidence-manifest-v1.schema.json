@@ -1,0 +1,88 @@
+{
+  "$id": "https://kinemica.com/schemas/evidence-manifest-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          },
+          {
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "type": "object"
+    },
+    "final_state": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      },
+      "type": "object"
+    },
+    "measurements": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "type": "object"
+    },
+    "preconditions": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      },
+      "type": "object"
+    },
+    "steps": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "version",
+    "preconditions",
+    "steps",
+    "measurements",
+    "artifacts",
+    "final_state"
+  ],
+  "title": "Kinemica Evidence Manifest v1",
+  "type": "object"
+}

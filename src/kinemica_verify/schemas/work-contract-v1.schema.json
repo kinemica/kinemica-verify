@@ -1,0 +1,111 @@
+{
+  "$id": "https://kinemica.com/schemas/work-contract-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "constraints": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "op": {
+            "enum": [
+              "eq",
+              "lt",
+              "lte",
+              "gt",
+              "gte"
+            ]
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "op",
+          "value"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "required"
+      ],
+      "type": "object"
+    },
+    "final_state": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      },
+      "type": "object"
+    },
+    "preconditions": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      },
+      "type": "object"
+    },
+    "required_steps": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "task": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "actor"
+      ],
+      "type": "object"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "version",
+    "task",
+    "preconditions",
+    "required_steps",
+    "constraints",
+    "evidence",
+    "final_state"
+  ],
+  "title": "Kinemica Work Contract v1",
+  "type": "object"
+}
