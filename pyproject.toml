@@ -8,14 +8,14 @@ version = "0.2.0"
 description = "Open-source verification infrastructure for physical-world work."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 authors = [
   { name = "Sylvester Kaczmarek" }
 ]
 keywords = ["verification", "robotics", "agents", "physical-ai", "safety"]
 classifiers = [
   "Development Status :: 3 - Alpha",
-  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -42,6 +42,8 @@ kinemica = "kinemica_verify.cli:main"
 Homepage = "https://kinemica.com"
 Repository = "https://github.com/kinemica/kinemica-verify"
 Issues = "https://github.com/kinemica/kinemica-verify/issues"
+Changelog = "https://github.com/kinemica/kinemica-verify/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/kinemica/kinemica-verify/tree/main/docs"
 
 [tool.setuptools.packages.find]
 where = ["src"]
