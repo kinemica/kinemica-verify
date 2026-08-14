@@ -6,7 +6,7 @@ Kinemica Verify handles paths, manifests, and policy-like verification inputs. S
 
 Please do not open a public issue for a suspected vulnerability.
 
-Use GitHub's private vulnerability reporting or Security Advisory mechanism for this repository. Include:
+Email **hello@kinemica.com** with the subject `Kinemica Verify security report`. Include:
 
 - affected version or commit
 - reproduction steps
