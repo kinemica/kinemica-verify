@@ -5,7 +5,7 @@ import shutil
 import stat
 from pathlib import Path
 
-from kinemica_verify.records import create_signed_record, verify_signed_record, write_signed_record
+from kinemica_verify.records import create_signed_record, sha256_file, verify_signed_record, write_signed_record
 from kinemica_verify.signing import generate_keypair
 
 EXAMPLE = Path(__file__).parents[1] / "examples" / "filter-replacement"
@@ -119,7 +119,15 @@ def test_record_contains_hashes_for_file_backed_artifacts(tmp_path: Path) -> Non
     record = create_signed_record(EXAMPLE / "work.yaml", EXAMPLE / "evidence", private_key)
     artifacts = record["payload"]["inputs"]["artifacts"]
 
-    assert set(artifacts) == {"before_image", "installation_image"}
+    assert set(artifacts) == {
+        "before_image",
+        "execution_trace",
+        "installation_image",
+    }
     assert len(artifacts["before_image"]["sha256"]) == 64
     assert len(artifacts["installation_image"]["sha256"]) == 64
+    assert artifacts["execution_trace"] == {
+        "path": "trace.jsonl",
+        "sha256": sha256_file(EXAMPLE / "evidence" / "trace.jsonl"),
+    }
     json.dumps(record, allow_nan=False)
