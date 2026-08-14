@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import operator
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from .contracts import load_evidence_manifest, load_work_contract
 from .evidence import artifact_failure
