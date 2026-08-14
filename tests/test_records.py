@@ -5,7 +5,12 @@ import shutil
 import stat
 from pathlib import Path
 
-from kinemica_verify.records import create_signed_record, sha256_file, verify_signed_record, write_signed_record
+from kinemica_verify.records import (
+    create_signed_record,
+    sha256_file,
+    verify_signed_record,
+    write_signed_record,
+)
 from kinemica_verify.signing import generate_keypair
 
 EXAMPLE = Path(__file__).parents[1] / "examples" / "filter-replacement"
