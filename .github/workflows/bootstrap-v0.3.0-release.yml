@@ -1,0 +1,82 @@
+name: Bootstrap v0.3.0 release
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_SHA: 0a38b5594ee61c9feaa5096de56d8628f2ae5172
+    steps:
+      - name: Check existing release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v0.3.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v7
+        if: steps.release.outputs.exists == 'false'
+        with:
+          ref: ${{ env.RELEASE_SHA }}
+          persist-credentials: false
+
+      - name: Validate release source
+        if: steps.release.outputs.exists == 'false'
+        run: |
+          grep -F 'version = "0.3.0"' pyproject.toml
+          grep -F '__version__ = "0.3.0"' src/kinemica_verify/__init__.py
+
+      - uses: actions/setup-python@v7
+        if: steps.release.outputs.exists == 'false'
+        with:
+          python-version: "3.12"
+
+      - name: Build distributions
+        if: steps.release.outputs.exists == 'false'
+        run: |
+          python -m pip install "build>=1.2,<2"
+          python -m build
+
+      - name: Create GitHub release
+        if: steps.release.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > /tmp/release-notes.md <<'EOF'
+          ## Kinemica Verify v0.3.0
+
+          This release adds deterministic execution-trace ingestion for physical-world work verification.
+
+          ### Added
+
+          - Execution Trace v1 JSON Lines format.
+          - `kinemica ingest-trace` for deterministic trace-to-manifest conversion.
+          - Strict event ordering and duplicate-key/duplicate-name validation.
+          - Non-finite JSON number rejection.
+          - Evidence-directory boundary enforcement for trace-declared files.
+          - Automatic source-trace provenance in signed verification records.
+          - Public Execution Trace Event v1 schema and documentation.
+          - Reference filter-replacement trace and deterministic CI regeneration gate.
+
+          Work Contract v1, Evidence Manifest v1, and Verification Record v1 semantics remain unchanged.
+          EOF
+          gh release create v0.3.0 \
+            dist/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$RELEASE_SHA" \
+            --title "v0.3.0" \
+            --notes-file /tmp/release-notes.md
