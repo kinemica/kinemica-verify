@@ -1,8 +1,13 @@
 name: Publish to PyPI
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git tag or commit to publish
+        required: true
+        default: v0.2.1
+        type: string
 
 permissions:
   contents: read
@@ -13,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: v0.2.1
+          ref: ${{ inputs.ref }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
