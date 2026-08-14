@@ -2,6 +2,22 @@
 
 All notable changes to Kinemica Verify are documented here.
 
+## 0.2.1 - 2026-08-14
+
+### Fixed
+
+- Raised the minimum Setuptools build dependency to 77 so the declared PEP 639 SPDX license metadata is supported by every allowed build backend version.
+
+### Improved
+
+- Reworked the README around a faster quick start and clearer public project explanation.
+- Added wheel and source distributions to the GitHub release process.
+- Added a clean-environment wheel smoke test to CI.
+- Added a manual PyPI Trusted Publishing workflow with isolated OIDC permissions.
+- Added project changelog and package documentation links.
+
+No Work Contract, Evidence Manifest, or Verification Record semantics changed in this patch release.
+
 ## 0.2.0 - 2026-08-14
 
 ### Added
