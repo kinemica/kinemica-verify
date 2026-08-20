@@ -11,6 +11,15 @@ Kinemica Verify turns a machine-readable **Work Contract** and collected evidenc
 
 v0.3 adds a deterministic execution-trace ingestion layer so operational systems can generate verification evidence from an ordered event stream instead of hand-authoring `manifest.yaml`.
 
+## Two interfaces
+
+Kinemica Verify can be used in two ways:
+
+- **CLI** through the `kinemica` command for local workflows, shell automation, CI, and operator tooling.
+- **Python library** through `kinemica_verify` for embedding verification directly in agents, robotics systems, automation, test harnesses, and other applications.
+
+Both interfaces use the same deterministic `verify_work()` core. The open-source verifier runs locally and does not require a hosted Kinemica service.
+
 ## Install
 
 ```bash
@@ -40,6 +49,25 @@ VERIFIED
 ```
 
 The CLI exits with `0` for a verified job, `1` for a failed verification, and `2` for invalid input or configuration. Add `--json` to verification commands for machine-readable output.
+
+## Embed in Python
+
+The same verification engine is available as a normal Python API:
+
+```python
+from kinemica_verify import verify_work
+
+report = verify_work("work.yaml", "evidence/")
+
+if report.verified:
+    print("VERIFIED")
+else:
+    for check in report.groups:
+        if not check.passed:
+            print(check.name, check.failures)
+```
+
+`verify_work()` returns a `VerificationReport` containing the same check results used by the CLI. Embedding the library does not introduce a second verification path or require network access.
 
 ## Ingest an execution trace
 
@@ -191,6 +219,7 @@ v0.3 verifies structured evidence and can deterministically derive Evidence Mani
 
 - **Explicit contracts**: completion criteria are machine-readable and reviewable before work starts.
 - **Deterministic verification**: the same contract and evidence produce the same result.
+- **CLI and library parity**: both interfaces call the same verification core.
 - **Evidence first**: failures identify which requirement was not satisfied.
 - **Cryptographic provenance**: signed records bind results to exact source files and artifacts.
 - **Actor agnostic**: the same model works across people, robots, agents, and mixed teams.
@@ -200,7 +229,7 @@ v0.3 verifies structured evidence and can deterministically derive Evidence Mani
 ## Repository layout
 
 ```text
-src/kinemica_verify/    Verifier, trace ingestion, signing, and CLI
+src/kinemica_verify/    Verifier, Python API, trace ingestion, signing, and CLI
 examples/               Complete example jobs, traces, and evidence
 schemas/                Public interchange schemas
 docs/                   Format and trust-boundary documentation

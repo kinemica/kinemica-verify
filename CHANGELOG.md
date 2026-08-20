@@ -2,6 +2,16 @@
 
 All notable changes to Kinemica Verify are documented here.
 
+## Unreleased
+
+### Improved
+
+- Clarified near the top of the README that Kinemica Verify is both a CLI and an embeddable Python library.
+- Added a concise `verify_work()` programmatic example for agents, robotics systems, automation, and other applications.
+- Added regression coverage confirming the public Python API and CLI use the same deterministic verification results.
+
+No Work Contract, Evidence Manifest, Verification Record, or execution-trace semantics changed.
+
 ## 0.3.0 - 2026-08-14
 
 ### Added
