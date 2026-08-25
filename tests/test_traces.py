@@ -154,3 +154,25 @@ def test_trace_must_be_inside_evidence_dir(tmp_path: Path) -> None:
 
     with pytest.raises(KinemicaVerifyError, match="must be inside"):
         manifest_from_trace(trace, evidence)
+
+
+def test_trace_without_measurements(tmp_path: Path) -> None:
+    trace = tmp_path / "trace-no-measurement.jsonl"
+    _write_events(
+        trace,
+        [
+            {"version": 1, "sequence": 1, "kind": "precondition", "name": "machine_powered_down", "value": True},
+            {"version": 1, "sequence": 2, "kind": "step", "name": "remove_old_filter"},
+            {"version": 1, "sequence": 3, "kind": "step", "name": "install_new_filter"},
+            {"version": 1, "sequence": 4, "kind": "step", "name": "secure_cover"},
+            {"version": 1, "sequence": 5, "kind": "final_state", "name": "system_test_passed", "value": True},
+        ],
+    )
+
+    manifest = manifest_from_trace(trace, tmp_path)
+
+    assert manifest["preconditions"] == {"machine_powered_down": True}
+    assert manifest["steps"] == ["remove_old_filter", "install_new_filter", "secure_cover"]
+    assert manifest["measurements"] == {}
+    assert manifest["artifacts"]["execution_trace"] == {"path": "trace-no-measurement.jsonl"}
+    assert manifest["final_state"] == {"system_test_passed": True}
