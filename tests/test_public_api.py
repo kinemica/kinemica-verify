@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import kinemica_verify.cli as cli
-from kinemica_verify import VerificationReport, verify_work
+from kinemica_verify import VerificationReport, cli, verify_work
 from kinemica_verify.verifier import verify_work as core_verify_work
 
 EXAMPLE = Path(__file__).parents[1] / "examples" / "filter-replacement"
